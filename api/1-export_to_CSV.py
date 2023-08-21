@@ -1,10 +1,11 @@
 #!/usr/bin/python3
 '''
-Python script that exports data to CSV format using REST API
+A script to export data in the CSV format.
 '''
-import requests
-import sys
+
 import csv
+import sys
+import requests
 
 if __name__ == "__main__":
     get_emp_id = sys.argv[1]
@@ -13,6 +14,7 @@ if __name__ == "__main__":
 
     todos_url = f'https://jsonplaceholder.typicode.com/todos?userId={get_emp_id}'
     get_emp_tasks = requests.get(todos_url).json()
+
     with open("{}.csv".format(get_emp_id), 'w', newline='') as csvfile:
         taskwriter = csv.writer(csvfile, quoting=csv.QUOTE_ALL)
         for task in get_emp_tasks:
