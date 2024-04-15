@@ -1,23 +1,39 @@
 #!/usr/bin/python3
-'''
-Python script that returns information using REST API
-'''
-import requests
+"""
+
+This script fetches and displays a user's tasks from JSONPlaceholder API based
+on a provided user ID.
+It prints the completed tasks of the specified user.
+
+"""
+
+
+import json
 import sys
+import urllib.request
+
+
+def main():
+    if len(sys.argv) < 2:
+        return
+    user_id = int(sys.argv[1])
+    user_url = f"https://jsonplaceholder.typicode.com/users/{user_id}"
+    todos_url = f"https://jsonplaceholder.typicode.com/users/{user_id}/todos"
+
+    with urllib.request.urlopen(user_url) as response:
+        user = json.loads(response.read().decode())
+    with urllib.request.urlopen(todos_url) as response:
+        todos = json.loads(response.read().decode())
+
+    total_tasks = len(todos)
+    done_tasks = sum(1 for task in todos if task.get('completed'))
+
+    print(f"Employee {user.get('name')} is done with tasks\
+          ({done_tasks}/{total_tasks}):")
+    for task in todos:
+        if task.get('completed'):
+            print(f"\t {task.get('title')}")
+
 
 if __name__ == "__main__":
-    get_emp_id = sys.argv[1]
-    user_url = (f'https://jsonplaceholder.typicode.com/users/{get_emp_id}')
-    get_emp_data = requests.get(user_url).json()
-    todos_url = (
-        f'https://jsonplaceholder.typicode.com/todos?userId={get_emp_id}')
-    get_emp_tasks = requests.get(todos_url).json()
-
-    done_tasks = [task for task in get_emp_tasks if task.get("completed")]
-
-    print(
-        f"Employee {get_emp_data['name']} is done with "
-        f"tasks({len(done_tasks)}/{len(get_emp_tasks)}):"
-    )
-    for task in done_tasks:
-        print("\t", task["title"])
+    main()
