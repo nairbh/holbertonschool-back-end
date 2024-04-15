@@ -26,7 +26,3 @@ if __name__ == "__main__":
     for task in todos:
         if task.get('completed'):
             print(f"\t {task.get('title')}")
-
-
-if __name__ == "__main__":
-    main()
