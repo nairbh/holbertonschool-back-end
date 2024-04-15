@@ -2,13 +2,11 @@
 '''
 Python script that returns information using REST API
 '''
-
-import json
+import requests
 import sys
 import urllib.request
 
-
-def main():
+if __name__ == "__main__":
     if len(sys.argv) < 2:
         return
     user_id = int(sys.argv[1])
